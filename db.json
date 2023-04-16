@@ -6,7 +6,7 @@
       "email": "john.doe@gmail.com",
       "phone": "052-865-1234",
       "status": "Pick a status",
-      "last-change": "",
+      "lastChange": "",
       "notes": [
         {
           "id": 1,
@@ -26,7 +26,7 @@
       "email": "kermit.roz@gmail.com",
       "phone": "052-224-4321",
       "status": "Pick a status",
-      "last-change": "",
+      "lastChange": "",
       "notes": [
         {
           "id": 1,
