@@ -22,9 +22,9 @@
     },
     {
       "id": 2,
-      "name": "John Doe",
-      "email": "john.doe@gmail.com",
-      "phone": "052-865-1234",
+      "name": "Kermit Roz",
+      "email": "kermit.roz@gmail.com",
+      "phone": "052-224-4321",
       "status": "Pick a status",
       "last-change": "",
       "notes": [
