@@ -1,0 +1,44 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@gmail.com",
+      "phone": "052-865-1234",
+      "status": "Pick a status",
+      "last-change": "",
+      "notes": [
+        {
+          "id": 1,
+          "note": "This is a note",
+          "date": "2019-01-01"
+        },
+        {
+          "id": 2,
+          "note": "This is another note",
+          "date": "2019-01-02"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@gmail.com",
+      "phone": "052-865-1234",
+      "status": "Pick a status",
+      "last-change": "",
+      "notes": [
+        {
+          "id": 1,
+          "note": "This is a note",
+          "date": "2019-01-01"
+        },
+        {
+          "id": 2,
+          "note": "This is another note",
+          "date": "2019-01-02"
+        }
+      ]
+    }
+  ]
+}
