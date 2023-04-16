@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Pafestivo/crm-server#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "json-serve": "^0.1.0",
     "json-server": "^0.17.3"
   }
 }
