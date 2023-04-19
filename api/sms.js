@@ -27,7 +27,7 @@ const deleteSchedule = async (id) => {
   try {
     const response = await axios.delete(`${scheduleUrl}/${id}`)
     return response.data
-  } catch {
+  } catch(error) {
     console.error('Error deleting schedule', error);
     throw error;
   }
