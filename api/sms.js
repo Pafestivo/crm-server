@@ -13,19 +13,29 @@ const timeFormat = {
 
 
 const getSchedules = async () => {
-  const response = await fetch(scheduleUrl, {
-    method: 'GET'
-  });
-  const schedules = await response.json();
-  return schedules;
+  try {
+    const response = await fetch(scheduleUrl, {
+      method: 'GET'
+    });
+    const schedules = await response.json();
+    return schedules;
+  } catch (error) {
+    console.error('Error getting schedules', error);
+    throw error;
+  }
 }
 
 const deleteSchedule = async (id) => {
-  const response = await fetch(`${scheduleUrl}/${id}`, {
-    method: 'DELETE'
-  });
-  const schedule = await response.json();
-  return schedule;
+  try {
+    const response = await fetch(`${scheduleUrl}/${id}`, {
+      method: 'DELETE'
+    });
+    const schedule = await response.json();
+    return schedule;
+  } catch {
+    console.error('Error deleting schedule', error);
+    throw error;
+  }
 }
 
 const job = schedule.scheduleJob('* * * * *', async () => {
