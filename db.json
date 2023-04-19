@@ -41,5 +41,13 @@
       ]
     }
   ],
-  "schedules": []
+  "schedules": [
+    {
+      "id": "c857f14b-458c-44cc-a35e-1cd3361f9fe0",
+      "customerUrl": "https://localhost/customers/1",
+      "date": "04/19/23",
+      "time": "10:48",
+      "customer": "John Doe"
+    }
+  ]
 }

@@ -37,16 +37,18 @@ const job = schedule.scheduleJob('* * * * *', async () => {
   const [currentDate, currentTime] = now.split(', ');
 
   schedules.forEach(schedule => {
+    
     if(currentDate === schedule.date && currentTime === schedule.time) {
 
       let data = qs.stringify({
         'post': '2',
-        'token': 'VjI45b92301db7cace98d736feb8c05ff2c',
+        'token': process.env.smsApi,
         'msg': `This is a reminder that ${schedule.customer} has requested a call today at ${schedule.time}. View customer here: ${schedule.customerUrl}`,
         'list': '0523453336',
         'from': 'wecome'
       });
-    
+
+
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -65,7 +67,7 @@ const job = schedule.scheduleJob('* * * * *', async () => {
           console.log(error);
         });
 
-      deleteSchedule(schedule.id);
+      // deleteSchedule(schedule.id);
     }
   });
 });
