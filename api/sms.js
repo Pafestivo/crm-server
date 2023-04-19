@@ -67,7 +67,7 @@ const job = schedule.scheduleJob('* * * * *', async () => {
           console.log(error);
         });
 
-      // deleteSchedule(schedule.id);
+      deleteSchedule(schedule.id);
     }
   });
 });
