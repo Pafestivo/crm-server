@@ -41,6 +41,8 @@ const job = schedule.scheduleJob('* * * * *', async () => {
   const [currentDate, currentTime] = now.split(', ');
 
   schedules.forEach(schedule => {
+    console.log(schedule.date, schedule.time)
+    console.log(currentDate, currentTime)
     
     if(currentDate === schedule.date && currentTime === schedule.time) {
 
