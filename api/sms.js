@@ -67,11 +67,12 @@ const job = schedule.scheduleJob('* * * * *', async () => {
       axios.request(config)
         .then((response) => {
           console.log(JSON.stringify(response.data));
-          deleteSchedule(schedule.id);
         })
         .catch((error) => {
           console.log(error);
         });
+
+      deleteSchedule(schedule.id);
     }
   });
 });
