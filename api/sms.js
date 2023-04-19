@@ -3,6 +3,7 @@ const axios = require('axios');
 const qs = require('qs');
 const scheduleUrl = 'https://crm-server-2ja0.onrender.com/schedules';
 const timeFormat = {
+  timeZone: 'Asia/Jerusalem',
   year: '2-digit',
   month: '2-digit',
   day: '2-digit',
@@ -37,7 +38,7 @@ const job = schedule.scheduleJob('* * * * *', async () => {
   
   const schedules = await getSchedules();
 
-  const now = new Date().toLocaleString(undefined, timeFormat);
+  const now = new Date().toLocaleString('en-US', timeFormat);
   const [currentDate, currentTime] = now.split(', ');
 
   schedules.forEach(schedule => {
