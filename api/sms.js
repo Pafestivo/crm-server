@@ -42,8 +42,6 @@ const job = schedule.scheduleJob('* * * * *', async () => {
   const [currentDate, currentTime] = now.split(', ');
 
   schedules.forEach(schedule => {
-    console.log(schedule.date, schedule.time)
-    console.log(currentDate, currentTime)
     
     if(currentDate === schedule.date && currentTime === schedule.time) {
 
@@ -69,12 +67,11 @@ const job = schedule.scheduleJob('* * * * *', async () => {
       axios.request(config)
         .then((response) => {
           console.log(JSON.stringify(response.data));
+          deleteSchedule(schedule.id);
         })
         .catch((error) => {
           console.log(error);
         });
-
-      deleteSchedule(schedule.id);
     }
   });
 });
