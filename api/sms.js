@@ -14,9 +14,7 @@ const timeFormat = {
 
 const getSchedules = async () => {
   try {
-    const response = await fetch(scheduleUrl, {
-      method: 'GET'
-    });
+    const response = await axios.get(scheduleUrl)
     const schedules = await response.json();
     return schedules;
   } catch (error) {
@@ -27,9 +25,7 @@ const getSchedules = async () => {
 
 const deleteSchedule = async (id) => {
   try {
-    const response = await fetch(`${scheduleUrl}/${id}`, {
-      method: 'DELETE'
-    });
+    const response = await axios.delete(`${scheduleUrl}/${id}`)
     const schedule = await response.json();
     return schedule;
   } catch {
