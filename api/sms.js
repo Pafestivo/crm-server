@@ -1,7 +1,7 @@
 const schedule = require('node-schedule');
 const axios = require('axios');
 const qs = require('qs');
-const scheduleUrl = 'http://localhost:3000/schedules';
+const scheduleUrl = 'https://crm-server-2ja0.onrender.com/schedules';
 const timeFormat = {
   year: '2-digit',
   month: '2-digit',
