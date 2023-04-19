@@ -15,8 +15,7 @@ const timeFormat = {
 const getSchedules = async () => {
   try {
     const response = await axios.get(scheduleUrl)
-    const schedules = await response.json();
-    return schedules;
+    return response.data;
   } catch (error) {
     console.error('Error getting schedules', error);
     throw error;
@@ -26,8 +25,7 @@ const getSchedules = async () => {
 const deleteSchedule = async (id) => {
   try {
     const response = await axios.delete(`${scheduleUrl}/${id}`)
-    const schedule = await response.json();
-    return schedule;
+    return response.data
   } catch {
     console.error('Error deleting schedule', error);
     throw error;
