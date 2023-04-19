@@ -34,7 +34,7 @@ const deleteSchedule = async (id) => {
 }
 
 const job = schedule.scheduleJob('* * * * *', async () => {
-
+  console.log('Function ran!')
   
   const schedules = await getSchedules();
 
