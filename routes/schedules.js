@@ -1,42 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql');
+const pool = require('../db.js');
 const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
-
-const timeFormat = {
-  timeZone: 'Asia/Jerusalem',
-  year: '2-digit',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  hourCycle: 'h23'
-}
-
-const pool = mysql.createPool({
-  host: 'sql216.main-hosting.eu',
-  user: 'u636091749_or_r',
-  password: '8#XdXWJmt',
-  database: 'u636091749_devdb',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
-
-// connect to database
-pool.createConnection((err) => {
-  if (err) {
-    console.log('Error connecting to Db', err);
-    return;
-  }
-  console.log('Connection established');
-});
-
-pool.on('error', (err) => {
-  console.error('MySQL error:', err);
-});
 
 // get all schedules or specific customer schedules
 router.get('/', (req, res) => {
@@ -45,7 +12,7 @@ router.get('/', (req, res) => {
   if (customerId) {
     const sql = `SELECT * FROM schedules WHERE customer_id = ${customerId}`;
 
-    con.query(sql, (err, rows) => {
+    pool.query(sql, (err, rows) => {
       if (err) res.status(500).json({ error: err.message });
 
       console.log('Schedules received from Db');
@@ -63,7 +30,7 @@ router.get('/', (req, res) => {
   } else {
     const sql = 'SELECT * FROM schedules';
 
-    con.query(sql, (err, rows) => {
+    pool.query(sql, (err, rows) => {
       if (err) res.status(500).json({ error: err.message });
 
       console.log('schedules received from Db');
@@ -85,7 +52,7 @@ router.get('/:id', (req, res) => {
 
   const sql = `SELECT * FROM schedules WHERE id = ${req.params.id}`;
 
-  con.query(sql, (err, rows) => {
+  pool.query(sql, (err, rows) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('schedule received from Db');
@@ -112,7 +79,7 @@ router.put('/:id', (req, res) => {
   time = '${req.body.time}'
   WHERE id = ${req.params.id}`;
 
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Schedule edited');
@@ -134,7 +101,7 @@ router.post('/', (req, res) => {
     '${req.body.customer_id}'
   )`;
 
-  con.query(sql, (err, response) => {
+  pool.query(sql, (err, response) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('schedule posted to DB');
@@ -146,7 +113,7 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   const sql = `DELETE FROM schedules WHERE id = ${req.params.id}`;
 
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Schedule deleted');

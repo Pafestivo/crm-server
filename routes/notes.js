@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2');
+const pool = require('../db.js');
 const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
@@ -15,29 +15,6 @@ const timeFormat = {
   hourCycle: 'h23'
 }
 
-const pool = mysql.createPool({
-  host: 'sql216.main-hosting.eu',
-  user: 'u636091749_or_r',
-  password: '8#XdXWJmt',
-  database: 'u636091749_devdb',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
-
-// connect to database
-pool.createConnection((err) => {
-  if (err) {
-    console.log('Error connecting to Db', err);
-    return;
-  }
-  console.log('Connection established');
-});
-
-pool.on('error', (err) => {
-  console.error('MySQL error:', err);
-});
-
 // get all notes or specific customer notes
 router.get('/', (req, res) => {
   const customerId = req.query.customer_id;
@@ -45,7 +22,7 @@ router.get('/', (req, res) => {
   if (customerId) {
     const sql = `SELECT * FROM notes WHERE customer_id = ${customerId}`;
 
-    con.query(sql, (err, rows) => {
+    pool.query(sql, (err, rows) => {
       if (err) res.status(500).json({ error: err.message });
 
       console.log('Notes received from Db');
@@ -61,7 +38,7 @@ router.get('/', (req, res) => {
   } else {
     const sql = 'SELECT * FROM notes';
 
-    con.query(sql, (err, rows) => {
+    pool.query(sql, (err, rows) => {
       if (err) res.status(500).json({ error: err.message });
 
       console.log('Notes received from Db');
@@ -82,7 +59,7 @@ router.get('/:id', (req, res) => {
 
   const sql = `SELECT * FROM notes WHERE id = ${req.params.id}`;
 
-  con.query(sql, (err, rows) => {
+  pool.query(sql, (err, rows) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('note received from Db');
@@ -108,7 +85,7 @@ router.put('/:id', (req, res) => {
   date_created = CONVERT_TZ(CURRENT_TIMESTAMP(), '+00:00', '+03:00')
   WHERE id = ${req.params.id}`;
 
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Note edited');
@@ -128,7 +105,7 @@ router.post('/', (req, res) => {
     '${req.body.customer_id}'
   )`;
 
-  con.query(sql, (err, response) => {
+  pool.query(sql, (err, response) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('note posed to DB');
@@ -140,7 +117,7 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   const sql = `DELETE FROM notes WHERE id = ${req.params.id}`;
 
-  con.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Note deleted');
