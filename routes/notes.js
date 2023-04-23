@@ -78,7 +78,7 @@ router.get('/:id', (req, res) => {
 // edit a note
 router.put('/:id', (req, res) => {
 
-  const dateCreated = new Date(row.).toLocaleString('en-US', timeFormat)
+  const dateCreated = new Date().toISOString().slice(0, 19).replace('T', ' ')
 
   const sql = `
   UPDATE notes
@@ -95,13 +95,14 @@ router.put('/:id', (req, res) => {
   });
 
   // update customer last change date
+  const lastChange = new Date().toLocaleString('en-US', timeFormat)
   const customerSql = `
   UPDATE customers
   SET
   lastChange = ?
   WHERE id = ?`;
 
-  pool.query(customerSql, [dateCreated, req.body.customer_id], (err, result) => {
+  pool.query(customerSql, [lastChange, req.body.customer_id], (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Customer last change date updated');
