@@ -87,11 +87,18 @@ router.post('/', (req, res) => {
 // delete a customer
 router.delete('/:id', (req, res) => {
   const deleteNotesSql = `DELETE FROM notes WHERE customer_id = ${req.params.id}`;
+  const deleteSchedulesSql = `DELETE FROM schedules WHERE customer_id = ${req.params.id}`;
   const deleteCustomerSql = `DELETE FROM customers WHERE id = ${req.params.id}`;
   con.query(deleteNotesSql, (err, response) => {
     if(err) throw err;
 
     console.log('Customer notes deleted from Db');
+
+    con.query(deleteSchedulesSql, (err, response) => {
+      if(err) throw err;
+
+      console.log('Customer schedules deleted from Db');
+    })
 
     con.query(deleteCustomerSql, (err, response) => {
       if(err) throw err;
