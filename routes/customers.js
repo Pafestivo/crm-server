@@ -62,6 +62,7 @@ router.get('/:id', (req, res) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer received from Db');
+    console.log(rows);
     const row = rows[0]
     const customer = {
       id: row.id,
