@@ -78,7 +78,7 @@ router.get('/:id', (req, res) => {
 // edit a note
 router.put('/:id', (req, res) => {
 
-  const dateCreated = new Date().toISOString().slice(0, 19).replace('T', ' ')
+  const dateCreated = new Date(row.).toLocaleString('en-US', timeFormat)
 
   const sql = `
   UPDATE notes
@@ -128,7 +128,7 @@ router.post('/', (req, res) => {
   })
 
   // update customer last change date
-  const lastChange = new Date().toISOString().slice(0, 19).replace('T', ' ')
+  const lastChange = new Date().toLocaleString('en-US', timeFormat)
   const customerSql = `
   UPDATE customers
   SET
@@ -154,7 +154,7 @@ router.delete('/:id', (req, res) => {
   });
 
   // update customer last change date
-  const lastChange = new Date().toISOString().slice(0, 19).replace('T', ' ')
+  const lastChange = new Date().toLocaleString('en-US', timeFormat)
   const customerSql = `
   UPDATE customers
   SET
