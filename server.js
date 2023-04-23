@@ -5,7 +5,7 @@ const { job } = require('./api/sms');
 
 job();
 
-app.use(cors({origin: 'https://crm-server-2ja0.onrender.com'}));
+app.use(cors({origin: 'https://crm-app-p51g.onrender.com/'}));
 
 const customerRouter = require('./routes/customers');
 const notesRouter = require('./routes/notes');
