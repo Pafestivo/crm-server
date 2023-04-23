@@ -93,20 +93,6 @@ router.put('/:id', (req, res) => {
     console.log('Note edited');
     res.json({ message: 'Note edited successfully' });
   });
-
-  // update customer last change date
-  const lastChange = new Date().toLocaleString('en-US', timeFormat)
-  const customerSql = `
-  UPDATE customers
-  SET
-  lastChange = ?
-  WHERE id = ?`;
-
-  pool.query(customerSql, [lastChange, req.body.customer_id], (err, result) => {
-    if (err) res.status(500).json({ error: err.message });
-
-    console.log('Customer last change date updated');
-  });
 });
 
 
@@ -126,20 +112,6 @@ router.post('/', (req, res) => {
 
     console.log('note posed to DB');
     res.json({ message: 'Note added successfully' });
-  })
-
-  // update customer last change date
-  const lastChange = new Date().toLocaleString('en-US', timeFormat)
-  const customerSql = `
-  UPDATE customers
-  SET
-  lastChange = ?
-  WHERE id = ?`;
-
-  pool.query(customerSql, [lastChange, req.body.customer_id], (err, result) => {
-    if (err) res.status(500).json({ error: err.message });
-
-    console.log('Customer last change date updated');
   });
 });
 
@@ -152,20 +124,6 @@ router.delete('/:id', (req, res) => {
 
     console.log('Note deleted');
     res.json({ message: 'Note deleted successfully' });
-  });
-
-  // update customer last change date
-  const lastChange = new Date().toLocaleString('en-US', timeFormat)
-  const customerSql = `
-  UPDATE customers
-  SET
-  lastChange = ?
-  WHERE id = ?`;
-
-  pool.query(customerSql, [lastChange, req.body.customer_id], (err, result) => {
-    if (err) res.status(500).json({ error: err.message });
-
-    console.log('Customer last change date updated');
   });
 });
 
