@@ -31,6 +31,10 @@ con.connect((err) => {
   console.log('Connection established');
 });
 
+con.on('error', (err) => {
+  console.error('MySQL error:', err);
+});
+
 // get all schedules or specific customer schedules
 router.get('/', (req, res) => {
   const customerId = req.query.customer_id;

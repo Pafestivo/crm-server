@@ -31,6 +31,10 @@ con.connect((err) => {
   console.log('Connection established');
 });
 
+con.on('error', (err) => {
+  console.error('MySQL error:', err);
+});
+
 // get all notes or specific customer notes
 router.get('/', (req, res) => {
   const customerId = req.query.customer_id;

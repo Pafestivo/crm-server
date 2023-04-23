@@ -23,13 +23,11 @@ app.use('/customers', customerRouter);
 app.use('/notes', notesRouter);
 app.use('/schedules', schedulesRouter);
 
-// Error catcher middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
-
 //404 page
 app.use((req, res) => {
   res.status(404).send('404 page not found');
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server listening on port ${process.env.PORT || 3000}`);
 });

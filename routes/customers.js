@@ -31,6 +31,10 @@ con.connect((err) => {
   console.log('Connection established');
 });
 
+con.on('error', (err) => {
+  console.error('MySQL error:', err);
+});
+
 // return all customers on /customers
 router.get('/', (req, res) => {
   const sql = 'SELECT * FROM customers';
