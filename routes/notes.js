@@ -98,7 +98,7 @@ router.put('/:id', (req, res) => {
   const customerSql = `
   UPDATE customers
   SET
-  last_change = ?
+  lastChange = ?
   WHERE id = ?`;
 
   pool.query(customerSql, [dateCreated, req.body.customer_id], (err, result) => {
@@ -132,7 +132,7 @@ router.post('/', (req, res) => {
   const customerSql = `
   UPDATE customers
   SET
-  last_change = ?
+  lastChange = ?
   WHERE id = ?`;
 
   pool.query(customerSql, [lastChange, req.body.customer_id], (err, result) => {
@@ -158,7 +158,7 @@ router.delete('/:id', (req, res) => {
   const customerSql = `
   UPDATE customers
   SET
-  last_change = ?
+  lastChange = ?
   WHERE id = ?`;
 
   pool.query(customerSql, [lastChange, req.body.customer_id], (err, result) => {
