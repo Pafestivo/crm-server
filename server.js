@@ -5,6 +5,12 @@ const { job } = require('./api/sms');
 
 job();
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 app.use(cors({
   origin: ['https://crm-app-p51g.onrender.com/', 'http://localhost/3000', 'http://localhost:3001']
 }));
