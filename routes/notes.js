@@ -78,14 +78,16 @@ router.get('/:id', (req, res) => {
 // edit a note
 router.put('/:id', (req, res) => {
 
+  const dateCreated = new Date().toISOString().slice(0, 19).replace('T', ' ')
+
   const sql = `
   UPDATE notes
   SET 
   description = ?,
-  date_created = new Date().toISOString().slice(0, 19).replace('T', ' ')
+  date_created = ?
   WHERE id = ?`;
 
-  pool.query(sql, [req.body.description, req.params.id], (err, result) => {
+  pool.query(sql, [req.body.description, dateCreate, req.params.id], (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Note edited');
