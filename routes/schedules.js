@@ -5,16 +5,6 @@ const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
 
-const timeFormat = {
-  timeZone: 'Asia/Jerusalem',
-  year: '2-digit',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  hourCycle: 'h23'
-}
-
 const con = mysql.createConnection({
   host: 'sql216.main-hosting.eu',
   user: 'u636091749_or_r',

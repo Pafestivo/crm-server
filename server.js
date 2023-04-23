@@ -5,7 +5,7 @@ const { job } = require('./api/sms');
 
 job();
 
-app.use(cors({origin: 'http://localhost:3001'}));
+app.use(cors({origin: 'https://crm-server-2ja0.onrender.com'}));
 
 const customerRouter = require('./routes/customers');
 const notesRouter = require('./routes/notes');
@@ -15,6 +15,11 @@ app.use('/customers', customerRouter);
 app.use('/notes', notesRouter);
 app.use('/schedules', schedulesRouter);
 
+// Error catcher middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 //404 page
 app.use((req, res) => {
