@@ -42,7 +42,6 @@ router.get('/:id', (req, res) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer received from Db');
-    console.log(rows);
     const row = rows[0]
     const customer = {
       id: row.id,
@@ -60,7 +59,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
 
   const { name, email, phone, status } = req.body;
-  const lastChange = new Date().toLocaleString('en-US', timeFormat)
+  const lastChange = new Date().toISOString().slice(0, 19).replace('T', ' ')
   const sql = 'INSERT INTO customers (name, phone, email, status, lastChange) VALUES (?, ?, ?, ?, ?)';
   pool.query(sql, [name, phone, email, status, lastChange], (err, response) => {
     if(err) res.status(500).json({ error: err.message });
@@ -102,7 +101,7 @@ router.put('/:id', (req, res) => {
 
   const { name, email, phone, status } = req.body;
   const id = req.params.id;
-  const lastChange = new Date().toLocaleString('en-US', timeFormat)
+  const lastChange = new Date().toISOString().slice(0, 19).replace('T', ' ')
   const sql = `
   UPDATE customers
   SET 
