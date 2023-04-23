@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
     const sql = `SELECT * FROM notes WHERE customer_id = ${customerId}`;
 
     con.query(sql, (err, rows) => {
-      if (err) throw err;
+      if (err) res.status(500).json({ error: err.message });
 
       console.log('Notes received from Db');
       const notes = rows.map(row => ({
@@ -59,7 +59,7 @@ router.get('/', (req, res) => {
     const sql = 'SELECT * FROM notes';
 
     con.query(sql, (err, rows) => {
-      if (err) throw err;
+      if (err) res.status(500).json({ error: err.message });
 
       console.log('Notes received from Db');
       const notes = rows.map(row => ({
@@ -80,7 +80,7 @@ router.get('/:id', (req, res) => {
   const sql = `SELECT * FROM notes WHERE id = ${req.params.id}`;
 
   con.query(sql, (err, rows) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('note received from Db');
     const row = rows[0]
@@ -106,7 +106,7 @@ router.put('/:id', (req, res) => {
   WHERE id = ${req.params.id}`;
 
   con.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) res.status(500).json({ error: err.message });
 
     console.log('Note edited');
     res.json({ message: 'Note edited successfully' });
@@ -126,7 +126,7 @@ router.post('/', (req, res) => {
   )`;
 
   con.query(sql, (err, response) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('note posed to DB');
     res.json({ message: 'Note added successfully' });
@@ -138,7 +138,7 @@ router.delete('/:id', (req, res) => {
   const sql = `DELETE FROM notes WHERE id = ${req.params.id}`;
 
   con.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) res.status(500).json({ error: err.message });
 
     console.log('Note deleted');
     res.json({ message: 'Note deleted successfully' });

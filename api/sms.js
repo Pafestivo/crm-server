@@ -20,7 +20,7 @@ const getSchedules = async () => {
     return response.data;
   } catch (error) {
     console.error('Error getting schedules', error);
-    throw error;
+    res.status(500).json({ error: err.message });
   }
 }
 
@@ -30,7 +30,7 @@ const deleteSchedule = async (id) => {
     return response.data
   } catch(error) {
     console.error('Error deleting schedule', error);
-    throw error;
+    res.status(500).json({ error: err.message });
   }
 }
 

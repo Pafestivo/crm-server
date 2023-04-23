@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
   const sql = 'SELECT * FROM customers';
 
   con.query(sql, (err, rows) => {
-    if (err) throw err;
+    if (err) res.status(500).json({ error: err.message });
 
     console.log('Data received from Db');
     const customers = rows.map(row => ({
@@ -59,7 +59,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const sql = `SELECT * FROM customers WHERE id = ${req.params.id}`;
   con.query(sql, (err, rows) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer received from Db');
     const row = rows[0]
@@ -81,7 +81,7 @@ router.post('/', (req, res) => {
   const { name, email, phone, status } = req.body;
   const sql = `INSERT INTO customers (name, phone, email, status, lastChange) VALUES ('${name}', '${phone}', '${email}', '${status}', CONVERT_TZ(CURRENT_TIMESTAMP(), '+00:00', '+03:00'))`;
   con.query(sql, (err, response) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer posted to Db');
     res.json({ message: 'Customer added successfully' });
@@ -94,18 +94,18 @@ router.delete('/:id', (req, res) => {
   const deleteSchedulesSql = `DELETE FROM schedules WHERE customer_id = ${req.params.id}`;
   const deleteCustomerSql = `DELETE FROM customers WHERE id = ${req.params.id}`;
   con.query(deleteNotesSql, (err, response) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer notes deleted from Db');
 
     con.query(deleteSchedulesSql, (err, response) => {
-      if(err) throw err;
+      if(err) res.status(500).json({ error: err.message });
 
       console.log('Customer schedules deleted from Db');
     })
 
     con.query(deleteCustomerSql, (err, response) => {
-      if(err) throw err;
+      if(err) res.status(500).json({ error: err.message });
 
       console.log('Customer deleted from Db')
     })
@@ -129,7 +129,7 @@ router.put('/:id', (req, res) => {
   WHERE id = ${req.params.id}`;
 
   con.query(sql, (err, response) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer updated on Db')
     res.json({ message: 'Customer updated successfully' });

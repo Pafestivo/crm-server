@@ -12,8 +12,9 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: ['https://crm-app-p51g.onrender.com/', 'http://localhost/3000', 'http://localhost:3001']
+  origin: ['https://crm-app-p51g.onrender.com/', 'http://localhost:3000', 'http://localhost:3001']
 }));
+
 
 const customerRouter = require('./routes/customers');
 const notesRouter = require('./routes/notes');

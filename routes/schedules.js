@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
     const sql = `SELECT * FROM schedules WHERE customer_id = ${customerId}`;
 
     con.query(sql, (err, rows) => {
-      if (err) throw err;
+      if (err) res.status(500).json({ error: err.message });
 
       console.log('Schedules received from Db');
       const schedules = rows.map(row => ({
@@ -61,7 +61,7 @@ router.get('/', (req, res) => {
     const sql = 'SELECT * FROM schedules';
 
     con.query(sql, (err, rows) => {
-      if (err) throw err;
+      if (err) res.status(500).json({ error: err.message });
 
       console.log('schedules received from Db');
       const schedules = rows.map(row => ({
@@ -83,7 +83,7 @@ router.get('/:id', (req, res) => {
   const sql = `SELECT * FROM schedules WHERE id = ${req.params.id}`;
 
   con.query(sql, (err, rows) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('schedule received from Db');
     const row = rows[0]
@@ -113,7 +113,7 @@ router.put('/:id', (req, res) => {
   WHERE id = ${req.params.id}`;
 
   con.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) res.status(500).json({ error: err.message });
 
     console.log('Schedule edited');
     res.json({ message: 'Schedule edited successfully' });
@@ -135,7 +135,7 @@ router.post('/', (req, res) => {
   )`;
 
   con.query(sql, (err, response) => {
-    if(err) throw err;
+    if(err) res.status(500).json({ error: err.message });
 
     console.log('schedule posted to DB');
     res.json({ message: 'Schedule added successfully' });
@@ -147,7 +147,7 @@ router.delete('/:id', (req, res) => {
   const sql = `DELETE FROM schedules WHERE id = ${req.params.id}`;
 
   con.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) res.status(500).json({ error: err.message });
 
     console.log('Schedule deleted');
     res.json({ message: 'Schedule deleted successfully' });
