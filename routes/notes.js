@@ -87,7 +87,7 @@ router.put('/:id', (req, res) => {
   date_created = ?
   WHERE id = ?`;
 
-  pool.query(sql, [req.body.description, dateCreate, req.params.id], (err, result) => {
+  pool.query(sql, [req.body.description, dateCreated, req.params.id], (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Note edited');
