@@ -102,13 +102,10 @@ router.get('/:id', (req, res) => {
 // update a schedule
 router.put('/:id', (req, res) => {
 
-  console.log(req.body.date);
-  const formatDate = new Date(req.body.date).tolocaleString('en-US', timeFormat);
-
   const sql = `
   UPDATE schedules
   SET 
-  date = '${formatDate}',
+  date = '${req.body.date}',
   time = '${req.body.time}'
   WHERE id = ${req.params.id}`;
 
