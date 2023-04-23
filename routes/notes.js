@@ -81,7 +81,7 @@ router.put('/:id', (req, res) => {
   const sql = `
   UPDATE notes
   SET 
-  description = '?',
+  description = ?,
   date_created = new Date().toISOString().slice(0, 19).replace('T', ' ')
   WHERE id = ?`;
 
@@ -101,8 +101,8 @@ router.post('/', (req, res) => {
   INSERT INTO notes 
   (description, customer_id) 
   VALUES (
-    '?',
-    '?'
+    ?,
+    ?
   )`;
 
   pool.query(sql, [req.body.description, req.body.customer_id], (err, response) => {

@@ -75,8 +75,8 @@ router.put('/:id', (req, res) => {
   const sql = `
   UPDATE schedules
   SET 
-  date = '?',
-  time = '?'
+  date = ?,
+  time = ?
   WHERE id = ?`;
 
   pool.query(sql, [req.body.date, req.body.time, req.params.id], (err, result) => {
@@ -94,11 +94,11 @@ router.post('/', (req, res) => {
   INSERT INTO schedules
   (customerUrl, date, time, customerName, customer_id) 
   VALUES (
-    '?',
-    '?',
-    '?',
-    '?',
-    '?'
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
   )`;
 
   pool.query(sql, [req.body.customerUrl, req.body.date, req.body.time, req.body.customerName, req.body.customer_id], (err, response) => {
