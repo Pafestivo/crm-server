@@ -1,7 +1,8 @@
 const schedule = require('node-schedule');
 const axios = require('axios');
 const qs = require('qs');
-const scheduleUrl = 'https://crm-server-2ja0.onrender.com/schedules';
+require('dotenv').config();
+const scheduleUrl = 'http://localhost:3000/schedules/';
 const timeFormat = {
   timeZone: 'Asia/Jerusalem',
   year: '2-digit',
@@ -42,16 +43,13 @@ const job = schedule.scheduleJob('* * * * *', async () => {
   const [currentDate, currentTime] = now.split(', ');
 
   schedules.forEach(schedule => {
-
-    console.log('schedule', schedule.date, schedule.time);
-    console.log('current', currentDate, currentTime);
     
     if(currentDate === schedule.date && currentTime === schedule.time) {
 
       let data = qs.stringify({
         'post': '2',
         'token': process.env.smsApi,
-        'msg': `This is a reminder that ${schedule.customer} has requested a call today at ${schedule.time}. View customer here: ${schedule.customerUrl}`,
+        'msg': `This is a reminder that ${schedule.customerName} has requested a call today at ${schedule.time}. View customer here: ${schedule.customerUrl}`,
         'list': '0523453336',
         'from': 'wecome'
       });
@@ -80,4 +78,4 @@ const job = schedule.scheduleJob('* * * * *', async () => {
   });
 });
 
-exports.job = job;
+module.exports = job;

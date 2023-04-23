@@ -120,8 +120,8 @@ router.put('/:id', (req, res) => {
   con.query(sql, (err, response) => {
     if(err) throw err;
 
-    console.log('Customer deleted from Db')
-    res.json({ message: 'Customer deleted successfully' });
+    console.log('Customer updated on Db')
+    res.json({ message: 'Customer updated successfully' });
   })
 });
 
