@@ -15,15 +15,18 @@ const timeFormat = {
   hourCycle: 'h23'
 }
 
-const con = mysql.createConnection({
+const pool = mysql.createPool({
   host: 'sql216.main-hosting.eu',
   user: 'u636091749_or_r',
   password: '8#XdXWJmt',
-  database: 'u636091749_devdb'
-})
+  database: 'u636091749_devdb',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
 // connect to database
-con.connect((err) => {
+pool.createConnection((err) => {
   if (err) {
     console.log('Error connecting to Db', err);
     return;
@@ -31,7 +34,7 @@ con.connect((err) => {
   console.log('Connection established');
 });
 
-con.on('error', (err) => {
+pool.on('error', (err) => {
   console.error('MySQL error:', err);
 });
 

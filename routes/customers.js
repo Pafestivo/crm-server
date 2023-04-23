@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
@@ -19,8 +19,14 @@ const con = mysql.createConnection({
   host: 'sql216.main-hosting.eu',
   user: 'u636091749_or_r',
   password: '8#XdXWJmt',
-  database: 'u636091749_devdb'
-})
+  database: 'u636091749_devdb',
+  typeCast: (field, next) => {
+    if (field.type === 'VAR_STRING') {
+      return field.string();
+    }
+    return next();
+  }
+});
 
 // connect to database
 con.connect((err) => {
@@ -42,7 +48,6 @@ router.get('/', (req, res) => {
   con.query(sql, (err, rows) => {
     if (err) res.status(500).json({ error: err.message });
 
-    console.log('Data received from Db');
     const customers = rows.map(row => ({
         id: row.id,
         name: row.name,
@@ -51,14 +56,15 @@ router.get('/', (req, res) => {
         status: row.status,
         lastChange: new Date(row.lastChange).toLocaleString('en-US', timeFormat)
     }))
+    console.log('Data received from Db');
     res.json(customers);
   });
 });
 
 // return a single customer on /customers/:id
 router.get('/:id', (req, res) => {
-  const sql = `SELECT * FROM customers WHERE id = ${req.params.id}`;
-  con.query(sql, (err, rows) => {
+  const sql = 'SELECT * FROM customers WHERE id = ?';
+  con.query(sql, [req.params.id], (err, rows) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer received from Db');
@@ -80,8 +86,9 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
 
   const { name, email, phone, status } = req.body;
-  const sql = `INSERT INTO customers (name, phone, email, status, lastChange) VALUES ('${name}', '${phone}', '${email}', '${status}', CONVERT_TZ(CURRENT_TIMESTAMP(), '+00:00', '+03:00'))`;
-  con.query(sql, (err, response) => {
+  const lastChange = new Date().toLocaleString('en-US', timeFormat)
+  const sql = 'INSERT INTO customers (name, phone, email, status, lastChange) VALUES (?, ?, ?, ?, ?)';
+  con.query(sql, [name, phone, email, status, lastChange], (err, response) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer posted to Db');
@@ -91,21 +98,21 @@ router.post('/', (req, res) => {
 
 // delete a customer
 router.delete('/:id', (req, res) => {
-  const deleteNotesSql = `DELETE FROM notes WHERE customer_id = ${req.params.id}`;
-  const deleteSchedulesSql = `DELETE FROM schedules WHERE customer_id = ${req.params.id}`;
-  const deleteCustomerSql = `DELETE FROM customers WHERE id = ${req.params.id}`;
-  con.query(deleteNotesSql, (err, response) => {
+  const deleteNotesSql = 'DELETE FROM notes WHERE customer_id = ?';
+  const deleteSchedulesSql = 'DELETE FROM schedules WHERE customer_id = ?';
+  const deleteCustomerSql = 'DELETE FROM customers WHERE id = ?';
+  con.query(deleteNotesSql, [req.params.id], (err, response) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer notes deleted from Db');
 
-    con.query(deleteSchedulesSql, (err, response) => {
+    con.query(deleteSchedulesSql, [req.params.id], (err, response) => {
       if(err) res.status(500).json({ error: err.message });
 
       console.log('Customer schedules deleted from Db');
     })
 
-    con.query(deleteCustomerSql, (err, response) => {
+    con.query(deleteCustomerSql, [req.params.id], (err, response) => {
       if(err) res.status(500).json({ error: err.message });
 
       console.log('Customer deleted from Db')
@@ -119,17 +126,20 @@ router.delete('/:id', (req, res) => {
 // update a customer
 router.put('/:id', (req, res) => {
 
+  const { name, email, phone, status } = req.body;
+  const id = req.params.id;
+  const lastChange = new Date().toLocaleString('en-US', timeFormat)
   const sql = `
   UPDATE customers
   SET 
-  name = '${req.body.name}',
-  email = '${req.body.email}',
-  phone = '${req.body.phone}',
-  status = '${req.body.status}',
-  lastChange = CONVERT_TZ(CURRENT_TIMESTAMP(), '+00:00', '+03:00')
-  WHERE id = ${req.params.id}`;
+  name = ?,
+  email = ?,
+  phone = ?,
+  status = ?,
+  lastChange = ?
+  WHERE id = ?`;
 
-  con.query(sql, (err, response) => {
+  con.query(sql, [name, email, phone, status, lastChange,id], (err, response) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('Customer updated on Db')
