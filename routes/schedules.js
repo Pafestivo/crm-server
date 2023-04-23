@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
   const customerId = req.query.customer_id;
 
   if (customerId) {
-    const sql = `SELECT * FROM schedules WHERE customer_id = ${customerId}`;
+    const sql = `SELECT * FROM schedules WHERE customer_id = ?`;
 
-    pool.query(sql, (err, rows) => {
+    pool.query(sql, [customerId], (err, rows) => {
       if (err) res.status(500).json({ error: err.message });
 
       console.log('Schedules received from Db');
@@ -50,9 +50,9 @@ router.get('/', (req, res) => {
 // get specific schedule
 router.get('/:id', (req, res) => {
 
-  const sql = `SELECT * FROM schedules WHERE id = ${req.params.id}`;
+  const sql = `SELECT * FROM schedules WHERE id = ?`;
 
-  pool.query(sql, (err, rows) => {
+  pool.query(sql, [req.params.id], (err, rows) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('schedule received from Db');
@@ -75,11 +75,11 @@ router.put('/:id', (req, res) => {
   const sql = `
   UPDATE schedules
   SET 
-  date = '${req.body.date}',
-  time = '${req.body.time}'
-  WHERE id = ${req.params.id}`;
+  date = '?',
+  time = '?'
+  WHERE id = ?`;
 
-  pool.query(sql, (err, result) => {
+  pool.query(sql, [req.body.date, req.body.time, req.params.id], (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Schedule edited');
@@ -94,14 +94,14 @@ router.post('/', (req, res) => {
   INSERT INTO schedules
   (customerUrl, date, time, customerName, customer_id) 
   VALUES (
-    '${req.body.customerUrl}',
-    '${req.body.date}',
-    '${req.body.time}',
-    '${req.body.customerName}',
-    '${req.body.customer_id}'
+    '?',
+    '?',
+    '?',
+    '?',
+    '?'
   )`;
 
-  pool.query(sql, (err, response) => {
+  pool.query(sql, [req.body.customerUrl, req.body.date, req.body.time, req.body.customerName, req.body.customer_id], (err, response) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('schedule posted to DB');
@@ -111,9 +111,9 @@ router.post('/', (req, res) => {
 
 // delete a schedule
 router.delete('/:id', (req, res) => {
-  const sql = `DELETE FROM schedules WHERE id = ${req.params.id}`;
+  const sql = `DELETE FROM schedules WHERE id = ?`;
 
-  pool.query(sql, (err, result) => {
+  pool.query(sql, [req.params.id], (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Schedule deleted');

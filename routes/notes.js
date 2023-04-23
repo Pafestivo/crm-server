@@ -20,9 +20,9 @@ router.get('/', (req, res) => {
   const customerId = req.query.customer_id;
 
   if (customerId) {
-    const sql = `SELECT * FROM notes WHERE customer_id = ${customerId}`;
+    const sql = `SELECT * FROM notes WHERE customer_id = ?`;
 
-    pool.query(sql, (err, rows) => {
+    pool.query(sql, [customerId], (err, rows) => {
       if (err) res.status(500).json({ error: err.message });
 
       console.log('Notes received from Db');
@@ -57,9 +57,9 @@ router.get('/', (req, res) => {
 // get specific note
 router.get('/:id', (req, res) => {
 
-  const sql = `SELECT * FROM notes WHERE id = ${req.params.id}`;
+  const sql = `SELECT * FROM notes WHERE id = ?`;
 
-  pool.query(sql, (err, rows) => {
+  pool.query(sql, [req.params.id], (err, rows) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('note received from Db');
@@ -81,11 +81,11 @@ router.put('/:id', (req, res) => {
   const sql = `
   UPDATE notes
   SET 
-  description = '${req.body.description}',
-  date_created = CONVERT_TZ(CURRENT_TIMESTAMP(), '+00:00', '+03:00')
-  WHERE id = ${req.params.id}`;
+  description = '?',
+  date_created = new Date().toISOString().slice(0, 19).replace('T', ' ')
+  WHERE id = ?`;
 
-  pool.query(sql, (err, result) => {
+  pool.query(sql, [req.body.description, req.params.id], (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Note edited');
@@ -101,11 +101,11 @@ router.post('/', (req, res) => {
   INSERT INTO notes 
   (description, customer_id) 
   VALUES (
-    '${req.body.description}',
-    '${req.body.customer_id}'
+    '?',
+    '?'
   )`;
 
-  pool.query(sql, (err, response) => {
+  pool.query(sql, [req.body.description, req.body.customer_id], (err, response) => {
     if(err) res.status(500).json({ error: err.message });
 
     console.log('note posed to DB');
@@ -115,9 +115,9 @@ router.post('/', (req, res) => {
 
 // delete a note
 router.delete('/:id', (req, res) => {
-  const sql = `DELETE FROM notes WHERE id = ${req.params.id}`;
+  const sql = `DELETE FROM notes WHERE id = ?`;
 
-  pool.query(sql, (err, result) => {
+  pool.query(sql, [req.params.id], (err, result) => {
     if (err) res.status(500).json({ error: err.message });
 
     console.log('Note deleted');
