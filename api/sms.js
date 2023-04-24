@@ -2,7 +2,7 @@ const schedule = require('node-schedule');
 const axios = require('axios');
 const qs = require('qs');
 require('dotenv').config();
-const scheduleUrl = 'https://crm-server-2ja0.onrender.com/schedules/';
+const scheduleUrl = 'http://localhost:3000/schedules/';
 const timeFormat = {
   timeZone: 'Asia/Jerusalem',
   year: '2-digit',
